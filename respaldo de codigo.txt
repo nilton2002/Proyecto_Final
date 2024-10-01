@@ -1,0 +1,194 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
+public class VacacionesApp {
+    private JFrame frame; // ventana principal de la aplicación
+    private JPanel bienvenidaPanel, principalPanel; // paneles para la interfaz
+    private JTextField nombreField; // campo de texto donde el usuario podrá ingresar texto
+    private JComboBox<String> departamentoBox, antiguedadBox; // comboBox para seleccionar departamentos y antigüedad
+    private JLabel resultadoLabel; // etiqueta para mostrar resultados
+
+    // Constructor
+    public VacacionesApp() {
+        prepararVentana();
+        mostrarBienvenida();
+    }
+
+    private void prepararVentana() {
+        frame = new JFrame(" Iximche´");
+        frame.setSize(1000, 700);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null); // centrar la pantalla al abrirse
+
+      // Cargar la imagen del ícono y establecerla en la ventana
+        try {
+            // Usar la ruta correcta para el archivo subido
+            Image icono = ImageIO.read(new File("imagenes/fondo.png")); // Asegúrate de que el archivo esté en la ruta correcta
+            frame.setIconImage(icono); // Establecer la imagen como ícono de la ventana
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Pantalla de bienvenida
+    private void mostrarBienvenida() {
+        bienvenidaPanel = new JPanel();
+        bienvenidaPanel.setLayout(new BoxLayout(bienvenidaPanel, BoxLayout.Y_AXIS)); // Disposición en columna
+        bienvenidaPanel.setBackground(Color.gray); // Fondo gris
+
+        // Cargar y redimensionar el logo
+        ImageIcon originalLogo = new ImageIcon("imagenes/logo.png");
+        Image logoImage = originalLogo.getImage().getScaledInstance(1000, 250, Image.SCALE_SMOOTH);
+        ImageIcon scaledLogo = new ImageIcon(logoImage);
+        JLabel logoLabel = new JLabel(scaledLogo);
+        logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrar el logo
+
+        JLabel tituloLabel = new JLabel("Cervecería IXIMCHE´", SwingConstants.CENTER);
+        tituloLabel.setFont(new Font("Arial", Font.BOLD, 70));
+        tituloLabel.setForeground(Color.BLACK);
+        tituloLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrar el título
+
+        JLabel nombreLabel = new JLabel("Ingrese su nombre:");
+        nombreLabel.setFont(new Font("Arial", Font.PLAIN, 40));
+        nombreLabel.setForeground(Color.black);
+        nombreLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrar el texto
+
+        nombreField = new JTextField(15); // Establecer tamaño del cuadro de texto a 15 columnas
+        nombreField.setMaximumSize(new Dimension(300, 30)); // Limitar el tamaño del cuadro de texto
+        nombreField.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrar el cuadro de texto
+
+        JButton continuarButton = new JButton("Ingresar");
+        continuarButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrar el botón
+        continuarButton.addActionListener((ActionEvent e) -> {
+            if (!nombreField.getText().isEmpty()) {
+                mostrarPantallaPrincipal();
+            } else {
+                JOptionPane.showMessageDialog(frame, "Por favor, ingrese su nombre.");
+            }
+        });
+
+        JLabel footerLabel = new JLabel("©IXIMCHE´");
+        footerLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        footerLabel.setForeground(Color.black);
+        footerLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrar el footer
+
+        // Agregar componentes al panel
+        bienvenidaPanel.add(Box.createVerticalStrut(50)); // Espaciador para mover los elementos hacia abajo
+        bienvenidaPanel.add(logoLabel); // Añadir logo
+        bienvenidaPanel.add(Box.createVerticalStrut(20)); // Espacio entre logo y título
+        bienvenidaPanel.add(tituloLabel); // Añadir título
+        bienvenidaPanel.add(Box.createVerticalStrut(20)); // Espacio entre título y nombre
+        bienvenidaPanel.add(nombreLabel); // Añadir etiqueta de nombre
+        bienvenidaPanel.add(Box.createVerticalStrut(10)); // Espacio antes del campo de texto
+        bienvenidaPanel.add(nombreField); // Añadir campo de texto
+        bienvenidaPanel.add(Box.createVerticalStrut(20)); // Espacio antes del botón
+        bienvenidaPanel.add(continuarButton); // Añadir botón
+        bienvenidaPanel.add(Box.createVerticalStrut(50)); // Espacio antes del texto de pie
+        bienvenidaPanel.add(footerLabel); // Añadir footer
+
+        frame.add(bienvenidaPanel, BorderLayout.CENTER);
+        frame.setVisible(true);
+    }
+
+    // Pantalla principal con cálculo de vacaciones
+    private void mostrarPantallaPrincipal() {
+        frame.remove(bienvenidaPanel);
+
+        principalPanel = new JPanel();
+        principalPanel.setLayout(new GridLayout(10, 2, 10, 10));
+        principalPanel.setBackground(Color.gray); // Fondo inicial
+
+        JLabel bienvenidoLabel = new JLabel("Bienvenido " + nombreField.getText(), SwingConstants.CENTER);
+        bienvenidoLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        bienvenidoLabel.setForeground(Color.black);
+
+        JLabel nombreLabel = new JLabel("Nombre completo:");
+        JTextField nombreCompletoField = new JTextField();
+        JLabel apellidoPaternoLabel = new JLabel("Apellido Paterno:");
+        JTextField apellidoPaternoField = new JTextField();
+        JLabel apellidoMaternoLabel = new JLabel("Apellido Materno:");
+        JTextField apellidoMaternoField = new JTextField();
+        JLabel departamentoLabel = new JLabel("Selecciona el Departamento:");
+        departamentoBox = new JComboBox<>(new String[]{"Atención al cliente", "Logística", "Gerente"});
+        JLabel antiguedadLabel = new JLabel("Selecciona la Antigüedad:");
+        antiguedadBox = new JComboBox<>(new String[]{"1", "2", "3", "4", "5", "6", "7+"});
+        JLabel resultadoLabelTexto = new JLabel("Resultado del Cálculo:");
+        resultadoLabel = new JLabel("Aquí aparece el resultado del cálculo de las vacaciones.", SwingConstants.CENTER);
+        resultadoLabel.setOpaque(true);
+        resultadoLabel.setBackground(Color.LIGHT_GRAY);
+        resultadoLabel.setForeground(Color.RED);
+
+        JButton calcularButton = new JButton("Calcular");
+        calcularButton.addActionListener(e -> {
+            String departamento = (String) departamentoBox.getSelectedItem();
+            String antiguedadSeleccionada = (String) antiguedadBox.getSelectedItem();
+
+            int antiguedad = antiguedadSeleccionada.equals("7+") ? 7 : Integer.parseInt(antiguedadSeleccionada);
+            int vacaciones = calcularVacaciones(departamento, antiguedad);
+            resultadoLabel.setText("Días de vacaciones: " + vacaciones);
+        });
+
+        principalPanel.add(bienvenidoLabel);
+        principalPanel.add(new JLabel("")); // Espacio en blanco
+        principalPanel.add(nombreLabel);
+        principalPanel.add(nombreCompletoField);
+        principalPanel.add(apellidoPaternoLabel);
+        principalPanel.add(apellidoPaternoField);
+        principalPanel.add(apellidoMaternoLabel);
+        principalPanel.add(apellidoMaternoField);
+        principalPanel.add(departamentoLabel);
+        principalPanel.add(departamentoBox);
+        principalPanel.add(antiguedadLabel);
+        principalPanel.add(antiguedadBox);
+        principalPanel.add(resultadoLabelTexto);
+        principalPanel.add(resultadoLabel);
+        principalPanel.add(calcularButton);
+
+        JLabel footerLabel = new JLabel("©IXIMCHE´| Todos los derechos reservados", SwingConstants.CENTER);
+        footerLabel.setForeground(Color.black);
+        principalPanel.add(footerLabel);
+
+        frame.add(principalPanel, BorderLayout.CENTER);
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    // Calcular vacaciones basado en el departamento y la antigüedad
+    public int calcularVacaciones(String departamento, int antiguedad) {
+        int diasVacaciones = 0;
+        if (antiguedad < 1) {
+            System.out.println("La antigüedad debe ser al menos 1 año.");
+            return diasVacaciones;
+        }
+        switch (departamento) {
+            case "Atención al cliente":
+                if (antiguedad == 1) diasVacaciones = 6;
+                else if (antiguedad >= 2 && antiguedad <= 6) diasVacaciones = 14;
+                else if (antiguedad >= 7) diasVacaciones = 20;
+                break;
+            case "Logística":
+                if (antiguedad == 1) diasVacaciones = 7;
+                else si antiguedad >= 2 && antiguedad <= 6) diasVacaciones = 15;
+                else si antiguedad >= 7) diasVacaciones = 22;
+                break;
+            case "Gerente":
+                if (antiguedad == 1) diasVacaciones = 10;
+                else si antiguedad >= 2 y antiguedad <= 6) diasVacaciones = 20;
+                else si antiguedad >= 7) diasVacaciones = 30;
+                break;
+            default:
+                System.out.println("Departamento no reconocido.");
+                break;
+        }
+        return diasVacaciones;
+    }
+
+    // Método main para ejecutar la aplicación
+    public static void main(String[] args) {
+        new VacacionesApp();
+    }
+}

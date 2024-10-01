@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>C:\Users\nilto\Desktop\INGENIERIA 4to semestre\4to Semestre\Programación II\Primer Parcial Nilton Chonay\Proyevcto_Final\dist\Proyecto_Final.jar</jar>
+  <outfile>C:\Users\nilto\Desktop\INGENIERIA 4to semestre\4to Semestre\Programación II\Primer Parcial Nilton Chonay\Proyevcto_Final\Proyecto_Final.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl></downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon></icon>
+  <jre>
+    <path>%JAVA_HOME%;%PATH%</path>
+    <requiresJdk>true</requiresJdk>
+    <requires64Bit>false</requires64Bit>
+    <minVersion>1.8</minVersion>
+    <maxVersion></maxVersion>
+  </jre>
+</launch4jConfig>
